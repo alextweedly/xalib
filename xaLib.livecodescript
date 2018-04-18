@@ -231,6 +231,24 @@ function xaQuery pArray, pNamedQuery, pKeyList
    
 end xaQuery
 
+function xaCopy pArray, pKeys, pFields
+   -- return a copy the subset of the array, with a key in pKeys, and the fields in pFields
+   local tAReturn
+   
+   if pFields is empty then -- faster to copy whole entry
+      repeat for each key K in pKeys
+         put pArray[K] into tAReturn[K]
+      end repeat
+   else
+      repeat for each key K in pKeys
+         repeat for each key F in pArray[K]
+            put pArray[K][F] into tAReturn[K][F]
+         end repeat
+      end repeat
+   end if
+   return tAReturn
+end xaCopy
+
 private command _xaComplete
    -- finish off a query 
    --  ensure there were enough close parens
